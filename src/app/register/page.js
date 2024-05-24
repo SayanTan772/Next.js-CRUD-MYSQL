@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react';
 
 export default function Register() {
     const [mssg, setMssg] = useState('');
+    const [show, setShow] = useState('none');
+    const [display, setDisplay] = useState('none');
 
     const initialFormData = {
         Firstname: '',
@@ -33,7 +35,14 @@ export default function Register() {
             });
     
             const result = await response.json();
-            setMssg(result);
+            if(response.ok) {
+                setDisplay('none');
+                setMssg(result);
+                setShow('flex');
+              } else {
+                setMssg(result);
+                setDisplay('flex');
+              }
         } catch (error) {
             console.error('Error submitting entry:', error);
         }
@@ -41,20 +50,21 @@ export default function Register() {
 
     return (
         <main className={styles.main}>
-        <h1>Sign Up</h1>
-        <form action="" method="POST" onSubmit={handleSubmit}>
-        <div>{ mssg }</div>
-        <label for="firstname">firstname:</label>
-        <input type="text" id="Firstname" name="Firstname" value={formData.Firstname} onChange={handleChange} /><br /><br />
-        <label for="lastname">lastname:</label>
-        <input type="text" id="Lastname" name="Lastname" value={formData.Lastname} onChange={handleChange} /><br /><br />
-        <label for="Phoneno">Phoneno:</label>
-        <input type="number" id="Phoneno" name="Phoneno" value={formData.Phoneno} onChange={handleChange} /><br /><br />
-        <label for="Email">Email:</label>
-        <input type="email" id="Email" name="Email" value={formData.Email} onChange={handleChange} /><br /><br />
-        <label for="password">Password:</label>
-        <input type="password" id="Password" name="Password" value={formData.Password} onChange={handleChange} /><br /><br />
-        <button type="submit">Sign Up</button>
+        <form className={styles.form} action="" method="POST" onSubmit={handleSubmit} autoComplete="off">
+        <h1 className={styles.h}>Sign Up</h1>
+        <div className={styles.success} style={{ display: `${show}` }}>{ mssg }</div>
+        <div className={styles.alert} style={{ display: `${display}` }}>{ mssg }</div>
+        <label className={styles.label} for="firstname">firstname:</label>
+        <input type="text" className={styles.input} id="Firstname" name="Firstname" value={formData.Firstname} onChange={handleChange} spellCheck="false" /><br />
+        <label className={styles.label} for="lastname">lastname:</label>
+        <input type="text" className={styles.input} id="Lastname" name="Lastname" value={formData.Lastname} onChange={handleChange} spellCheck="false" /><br />
+        <label className={styles.label} for="Phoneno">Phoneno:</label>
+        <input type="number" className={styles.input} id="Phoneno" name="Phoneno" value={formData.Phoneno} onChange={handleChange} spellCheck="false" /><br />
+        <label className={styles.label} for="Email">Email:</label>
+        <input type="email" className={styles.input} id="Email" name="Email" value={formData.Email} onChange={handleChange} spellCheck="false" /><br />
+        <label className={styles.label} for="password">Password:</label>
+        <input type="password" className={styles.input} id="Password" name="Password" value={formData.Password} onChange={handleChange} spellCheck="false" /><br />
+        <div className={styles.div}><button className={styles.btn} type="submit">Submit</button></div>
         </form>
         </main>
     );

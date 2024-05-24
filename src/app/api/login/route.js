@@ -10,7 +10,7 @@ export async function GET(request) {
 
   // Check if username and password are provided
   if (!username || !password) {
-    return new Response(JSON.stringify('Username and password are required'), {
+    return new Response(JSON.stringify('username and password are required!'), {
       status: 400, // Bad Request status
       headers: { 'Content-Type': 'application/json' }, // Set response type to JSON
     });

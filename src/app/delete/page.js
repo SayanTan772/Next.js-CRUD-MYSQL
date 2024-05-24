@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react';
 
 export default function Register() {
     const [mssg, setMssg] = useState('');
+    const [show, setShow] = useState('none');
+    const [display, setDisplay] = useState('none');
 
     const initialFormData = {
         Email: ''
@@ -29,7 +31,14 @@ export default function Register() {
             });
     
             const result = await response.json();
-            setMssg(result);
+            if(response.ok) {
+                setDisplay('none');
+                setMssg(result);
+                setShow('flex');
+              } else {
+                setMssg(result);
+                setDisplay('flex');
+              }
         } catch (error) {
             console.error('Error submitting entry:', error);
         }
@@ -37,12 +46,13 @@ export default function Register() {
 
     return (
         <main className={styles.main}>
-        <h1>Sign Up</h1>
-        <form action="" onSubmit={handleSubmit}>
-        <div>{ mssg }</div>
-        <label for="Email">Email:</label>
-        <input type="email" id="Email" name="Email" value={formData.Email} onChange={handleChange} /><br /><br />
-        <button type="submit">Delete</button>
+        <form className={styles.form} action="" onSubmit={handleSubmit} autoComplete="off">
+        <h1 className={styles.h}>Delete User</h1>
+        <div className={styles.success} style={{ display: `${show}` }}>{ mssg }</div>
+        <div className={styles.alert} style={{ display: `${display}` }}>{ mssg }</div>
+        <label className={styles.label} for="Email">Email:</label>
+        <input className={styles.input} type="email" id="Email" name="Email" value={formData.Email} onChange={handleChange} spellCheck="false" /><br />
+        <div className={styles.div}><button className={styles.btn} type="submit">Delete</button></div>
         </form>
         </main>
     );

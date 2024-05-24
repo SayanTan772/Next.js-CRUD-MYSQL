@@ -6,7 +6,9 @@ import { useState, useEffect } from 'react';
 export default function Login() {
   const [firstname, setFirstname] = useState('');
   const [password, setPassword] = useState();
-  const [message, setMessage] = useState(''); // To show the error and success messages
+  const [message, setMessage] = useState('');
+  const [show, setShow] = useState('none');
+  const [display, setDisplay] = useState('none');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,7 +27,14 @@ export default function Login() {
       const response = await fetch(`/api/login?username=${firstname}&password=${password}`);
       const result = await response.json();
 
-      setMessage(result);
+      if(response.ok) {
+        setDisplay('none');
+        setMessage(result);
+        setShow('flex');
+      } else {
+        setMessage(result);
+        setDisplay('flex');
+      }
     } catch(error) {
       console.log("Error fetching data: ", error);
     }
@@ -34,14 +43,15 @@ export default function Login() {
   return (
     <main className={styles.main}>
       <div>
-      <h1>Login</h1>
-      <form action="" method="GET">
-        <div>{ message }</div>
-        <label for="Firstname">Firstname</label><br /><br />
-        <input type="text" name="Firstname" id="FirstName" value={firstname} onChange={handleChange} /><br /><br />
-        <label for="Password">Password</label><br /><br />
-        <input type="password" name="Password" id="Password" value={password} onChange={handleChange} /><br /><br />
-        <button onClick={handleSubmit}>Submit</button>
+      <form className={styles.form} action="" method="GET" autoComplete="off">
+        <h1 className={styles.h}>Log In</h1>
+        <div className={styles.success} style={{ display: `${show}` }}>{ message }</div>
+        <div className={styles.alert} style={{ display: `${display}` }}>{ message }</div>
+        <label for="Firstname" className={styles.label}>Firstname</label><br />
+        <input className={styles.input} type="text" name="Firstname" id="FirstName" value={firstname} onChange={handleChange} spellCheck="false" /><br />
+        <label for="Password" className={styles.label}>Password</label><br />
+        <input className={styles.input} type="password" name="Password" id="Password" value={password} onChange={handleChange} spellCheck="false" /><br />
+        <div className={styles.div}><button className={styles.btn} onClick={handleSubmit}>Submit</button></div>
       </form>
     </div>
     </main>

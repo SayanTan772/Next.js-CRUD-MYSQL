@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react';
 
 export default function Register() {
     const [mssg, setMssg] = useState('');
+    const [show, setShow] = useState('none');
+    const [display, setDisplay] = useState('none');
 
     const initialFormData = {
         Email: '',
@@ -31,7 +33,14 @@ export default function Register() {
             });
     
             const result = await response.json();
-            console.log(result);
+            if(response.ok) {
+                setDisplay('none');
+                setMssg(result);
+                setShow('flex');
+              } else {
+                setMssg(result);
+                setDisplay('flex');
+              }
         } catch (error) {
             console.error('Error submitting entry:', error);
         }
@@ -39,16 +48,17 @@ export default function Register() {
 
     return (
         <main className={styles.main}>
-        <h1>Sign Up</h1>
-        <form action="" method="PUT" onSubmit={handleSubmit}>
-        <div>{ mssg }</div>
-        <label for="Email">Email:</label>
-        <input type="email" id="Email" name="Email" value={formData.Email} onChange={handleChange} /><br /><br />
-        <label for="password">Password:</label>
-        <input type="password" id="Password" name="Password" value={formData.Password} onChange={handleChange} /><br /><br />
-        <label for="password">Confirm Password:</label>
-        <input type="password" id="confirmPass" name="confirmPass" value={formData.confirmPass} onChange={handleChange} /><br /><br />
-        <button type="submit">Sign Up</button>
+        <form action="" className={styles.form} method="PUT" onSubmit={handleSubmit} autoComplete="off">
+        <div className={styles.h}>Update Password</div>
+        <div className={styles.success} style={{ display: `${show}` }}>{ mssg }</div>
+        <div className={styles.alert} style={{ display: `${display}` }}>{ mssg }</div>
+        <label className={styles.label} for="Email">Email:</label>
+        <input className={styles.input} type="email" id="Email" name="Email" value={formData.Email} onChange={handleChange} spellCheck="false" /><br />
+        <label className={styles.label} for="password">Password:</label>
+        <input className={styles.input} type="password" id="Password" name="Password" value={formData.Password} onChange={handleChange} spellCheck="false" /><br />
+        <label className={styles.label} for="password">Confirm Password:</label>
+        <input className={styles.input} type="password" id="confirmPass" name="confirmPass" value={formData.confirmPass} onChange={handleChange} spellCheck="false" /><br />
+        <div className={styles.div}><button className={styles.btn} type="submit">Submit</button></div>
         </form>
         </main>
     );
