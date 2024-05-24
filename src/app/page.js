@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 export default function Login() {
   const [firstname, setFirstname] = useState('');
   const [password, setPassword] = useState();
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState(''); // To show the error and success messages
 
   const handleChange = (e) => {
     const { name, value } = e.target;
